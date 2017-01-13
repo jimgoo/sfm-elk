@@ -1,0 +1,1010 @@
+// curl localhost:9200/_all/_mapping?pretty > default-mapping.json
+{
+  ".kibana" : {
+    "mappings" : {
+      "config" : {
+        "properties" : {
+          "buildNum" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "defaultIndex" : {
+            "type" : "string"
+          }
+        }
+      },
+      "index-pattern" : {
+        "properties" : {
+          "fields" : {
+            "type" : "string"
+          },
+          "timeFieldName" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        }
+      },
+      "search" : {
+        "properties" : {
+          "columns" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "hits" : {
+            "type" : "long"
+          },
+          "kibanaSavedObjectMeta" : {
+            "properties" : {
+              "searchSourceJSON" : {
+                "type" : "string"
+              }
+            }
+          },
+          "sort" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "long"
+          }
+        }
+      },
+      "dashboard" : {
+        "properties" : {
+          "description" : {
+            "type" : "string"
+          },
+          "hits" : {
+            "type" : "long"
+          },
+          "kibanaSavedObjectMeta" : {
+            "properties" : {
+              "searchSourceJSON" : {
+                "type" : "string"
+              }
+            }
+          },
+          "optionsJSON" : {
+            "type" : "string"
+          },
+          "panelsJSON" : {
+            "type" : "string"
+          },
+          "timeFrom" : {
+            "type" : "string"
+          },
+          "timeRestore" : {
+            "type" : "boolean"
+          },
+          "timeTo" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "uiStateJSON" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "long"
+          }
+        }
+      },
+      "visualization" : {
+        "properties" : {
+          "description" : {
+            "type" : "string"
+          },
+          "kibanaSavedObjectMeta" : {
+            "properties" : {
+              "searchSourceJSON" : {
+                "type" : "string"
+              }
+            }
+          },
+          "savedSearchId" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "uiStateJSON" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "long"
+          },
+          "visState" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  },
+  "logstash-2017.01.12" : {
+    "mappings" : {
+      "aliases" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          }
+        }
+      },
+      "tweet" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "created_at" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          },
+          "geoip_location" : {
+            "properties" : {
+              "coordinates" : {
+                "type" : "double"
+              },
+              "type" : {
+                "type" : "string",
+                "norms" : {
+                  "enabled" : false
+                },
+                "fielddata" : {
+                  "format" : "disabled"
+                },
+                "fields" : {
+                  "raw" : {
+                    "type" : "string",
+                    "index" : "not_analyzed",
+                    "ignore_above" : 256
+                  }
+                }
+              }
+            }
+          },
+          "hashtags" : {
+            "type" : "string",
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            },
+            "analyzer" : "analyzer_keyword"
+          },
+          "host" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "id" : {
+            "type" : "long"
+          },
+          "screen_name" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "sm_type" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "text" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "urls" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "user_id" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "user_mentions" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          }
+        }
+      },
+      "twitter" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          },
+          "hashtags" : {
+            "type" : "string",
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+              }
+            },
+            "analyzer" : "analyzer_keyword"
+          }
+        }
+      },
+      "_default_" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "logstash-2017.01.13" : {
+    "mappings" : {
+      "aliases" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          }
+        }
+      },
+      "tweet" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "created_at" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          },
+          "geoip_latitude" : {
+            "type" : "double"
+          },
+          "geoip_location" : {
+            "type" : "double"
+          },
+          "geoip_longitude" : {
+            "type" : "double"
+          },
+          "hashtags" : {
+            "type" : "string",
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            },
+            "analyzer" : "analyzer_keyword"
+          },
+          "host" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "id" : {
+            "type" : "long"
+          },
+          "screen_name" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "sm_type" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "text" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "urls" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "user_id" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "user_mentions" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fielddata" : {
+              "format" : "disabled"
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 256
+              }
+            }
+          }
+        }
+      },
+      "twitter" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          },
+          "hashtags" : {
+            "type" : "string",
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed"
+              }
+            },
+            "analyzer" : "analyzer_keyword"
+          }
+        }
+      },
+      "_default_" : {
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        },
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "ignore_above" : 256,
+                  "index" : "not_analyzed",
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "type" : "date",
+            "format" : "strict_date_optional_time||epoch_millis"
+          },
+          "@version" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "geoip" : {
+            "dynamic" : "true",
+            "properties" : {
+              "ip" : {
+                "type" : "ip"
+              },
+              "latitude" : {
+                "type" : "float"
+              },
+              "location" : {
+                "type" : "geo_point"
+              },
+              "longitude" : {
+                "type" : "float"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 
@@ -34,5 +35,4 @@ for export in exports:
     print "Loading {} ({})".format(export["_id"], export["_type"])
     resp = requests.post("http://localhost:9200/.kibana/{}/{}".format(export["_type"], export["_id"]), data=json.dumps(export["_source"]))
     resp.raise_for_status()
-
-
+    

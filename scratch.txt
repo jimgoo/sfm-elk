@@ -1,0 +1,30 @@
+mutate {
+  mutate {
+        add_field => ["[geoip][location]", ["%{geoip_longitude}, %{geoip_latitude}"] ]
+    }
+        add_field => [ "[geoip][location]", "%{geoip_longitude}" ]
+        add_field => [ "[geoip][location]", "%{geoip_latitude}" ]
+    }
+
+        mutate {
+        add_field => [ "[geoip][location]", "%{geoip:longitude}" ]
+        add_field => [ "[geoip][location]", "%{geoip:latitude}" ]
+    }
+    mutate {
+        convert => {
+            "[location][lat]" => "float"
+            "[location][lon]" => "float"
+        }
+
+    }   
+
+
+add_field => [ "geoip_location", "%{geoip_longitude}" ]
+add_field => [ "geoip_location", "%{geoip_latitude}" ]   
+
+
+    geoip {
+        source => "_id"
+        target => "geoip"
+        add_field => [ "location", "%{[geoip][latitude]}, %{[geoip][longitude]}" ]
+    }

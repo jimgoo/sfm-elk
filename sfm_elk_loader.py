@@ -23,11 +23,16 @@ class ElkLoader(BaseConsumer):
             return
 
         harvest_type = self.message["harvest"]["type"]
+        # Not sure how to implementvf dotted field names with `jq`,
+        # so geoip.<latitude,longitude> was renamed to geoip_<latitude, longitude>.
         jq_cmd = "jq -c '{ sm_type: \"tweet\", id: .id, user_id: .user.id_str, " \
                  "screen_name: .user.screen_name, created_at: .created_at, text: .text, " \
+                 "geoip_longitude: .coordinates?.coordinates[0], " \
+                 "geoip_latitude: .coordinates?.coordinates[1], " \
                  "user_mentions: [.entities.user_mentions[]?.screen_name], " \
                  "hashtags: [.entities.hashtags[]?.text], " \
                  "urls: [.entities.urls[]?.expanded_url]}'"
+
         if harvest_type in ('twitter_search', 'twitter_user_timeline'):
             iter_type = "twitter_rest_warc_iter.py"
         elif harvest_type in ('twitter_sample', 'twitter_filter'):
@@ -41,7 +46,6 @@ class ElkLoader(BaseConsumer):
             return
         log.info("Loading %s", warc_filepath)
         cmd = "{} {} | {} | /opt/logstash/bin/logstash -f stdin.conf".format(iter_type, warc_filepath, jq_cmd)
-
         try:
             check_output(cmd, shell=True)
             log.debug("Loading %s completed.", warc_filepath)

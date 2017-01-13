@@ -23,6 +23,9 @@ ENV DEBUG false
 ADD https://raw.githubusercontent.com/gwu-libraries/sfm-utils/master/docker/base/setup_reqs.sh /opt/sfm-setup/
 RUN chmod +x /opt/sfm-setup/setup_reqs.sh
 ADD docker/start.sh /usr/local/bin/sfm_elk_start.sh
+
+RUN docker/opt/logstash/bin/logstash-plugin install logstash-filter-mutate
+
 RUN chmod +x /usr/local/bin/sfm_elk_start.sh
 
 # More aggressive log-rotating
