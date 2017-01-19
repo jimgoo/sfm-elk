@@ -24,8 +24,6 @@ ADD https://raw.githubusercontent.com/gwu-libraries/sfm-utils/master/docker/base
 RUN chmod +x /opt/sfm-setup/setup_reqs.sh
 ADD docker/start.sh /usr/local/bin/sfm_elk_start.sh
 
-RUN docker/opt/logstash/bin/logstash-plugin install logstash-filter-mutate
-
 RUN chmod +x /usr/local/bin/sfm_elk_start.sh
 
 # More aggressive log-rotating
@@ -36,5 +34,7 @@ RUN mv /etc/cron.daily/logrotate /etc/cron.hourly/
 ADD . /opt/sfm-elk/
 WORKDIR /opt/sfm-elk
 RUN pip install -r requirements/common.txt -r requirements/release.txt
+
+#RUN /opt/logstash/bin/logstash-plugin install logstash-filter-mutate
 
 ENTRYPOINT ["/usr/local/bin/sfm_elk_start.sh"]

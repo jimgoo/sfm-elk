@@ -1,0 +1,299 @@
+[
+  {
+    "count": 0, 
+    "name": "_source", 
+    "analyzed": false, 
+    "indexed": false, 
+    "doc_values": false, 
+    "type": "_source", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "@version", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "@timestamp", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "date", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "_id", 
+    "analyzed": false, 
+    "indexed": false, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "_type", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "_score", 
+    "analyzed": false, 
+    "indexed": false, 
+    "doc_values": false, 
+    "type": "number", 
+    "scripted": false
+  },
+  {
+    "count": 0, 
+    "name": "collection_set", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  },
+  {
+    "count": 0, 
+    "name": "collection", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  },
+  {
+    "count": 0, 
+    "name": "mongo", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "harvest_type", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  },
+  {
+    "count": 0, 
+    "name": "warc", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  },
+  {
+    "count": 0, 
+    "name": "sm_type", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "created_at.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "host.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "created_at", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "user_id", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "text.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "geoip.ip", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "ip", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "user_mentions", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "user_mentions.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "user_id.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "text", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "host", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "screen_name.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "urls", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "urls.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "_index", 
+    "analyzed": false, 
+    "indexed": false, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "hashtags.raw", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "geoip_longitude", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "number", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "geoip_latitude", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": true, 
+    "type": "number", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "hashtags", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "screen_name", 
+    "analyzed": true, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "string", 
+    "scripted": false
+  }, 
+  {
+    "count": 0, 
+    "name": "geoip.location", 
+    "analyzed": false, 
+    "indexed": true, 
+    "doc_values": false, 
+    "type": "geo_point", 
+    "scripted": false
+  }
+]
