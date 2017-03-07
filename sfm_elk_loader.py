@@ -34,6 +34,7 @@ jq_twtr ="jq -c '{ sm_type: \"tweet\", " \
          "hashtags: [.entities.hashtags[]?.text], " \
          "urls: [.entities.urls[]?.expanded_url]}'"
 
+HARVEST_TYPES = set(['twitter_search', 'twitter_user_timeline', 'twitter_sample', 'twitter_filter', 'weibo_timeline'])
 
 def get_jq_cmd(harvest_type, collection_set, collection, warc_filepath):
 
@@ -53,8 +54,8 @@ def get_jq_cmd(harvest_type, collection_set, collection, warc_filepath):
         jq_cmd = "jq -c '{ sm_type: \"weibo\", id: .mid, user_id: .user.idstr, " \
                  "screen_name: .user.screen_name, created_at: .created_at, text: .text}'"
     else:
-        raise Exception('No iterator for harvest_type = "%s"' % harvest_type)
-
+        log.info("<WARC> Skipping '%s' because there is not yet a warc iterator for harvest type '%s'.", \
+                 warc_filepath, harvest_type)
     return jq_cmd, iter_type
 
 
@@ -115,6 +116,9 @@ class ElkLoader(BaseConsumer):
 
 
 def find_files(directory, pattern):
+    """
+    Recursively find files matching pattern.
+    """
     out = []
     for root, dirs, files in os.walk(directory):
         for basename in files:
@@ -182,21 +186,33 @@ def load_mongo_collection(db_str, coll_str,
     finally:
         client.close()
 
-def load_mongos():
-    db_str = 'twitter'
-    harvest_type = 'twitter_filter'
+def load_mongos(colls, db_str='twitter', harvest_type='twitter_filter'):
+    if harvest_type not in HARVEST_TYPES:
+        raise Exception('Unknown harvest type "%s". Must be one of %s' % str(HARVEST_TYPES))
+    #colls = ['huntington', 'narcan']
+    #colls = ['huntington_rest']
+    #colls = ['huntington_rest', 'huntington_rest_30m']
+    #colls = ['election_third_debate']
 
-    colls = ['huntington', 'narcan']
-    collection_sets = ['bdb94ce08ebb49d0ba8a7cdcc1e37ff6', 'bdb94ce08ebb49d0ba8a7cdcc1e37ff6']
-    collections = ['fb336c5bd9d84251af2d596138df8fbb', 'c397f7da7e7a40bdbc89b9df542957ce']
+    #collection_sets = ['bdb94ce08ebb49d0ba8a7cdcc1e37ff6'] #, 'bdb94ce08ebb49d0ba8a7cdcc1e37ff6']
+    #collections = ['fb336c5bd9d84251af2d596138df8fbb'] #, 'c397f7da7e7a40bdbc89b9df542957ce']
+    
+    #collection_sets = ['bdb94ce08ebb49d0ba8a7cdcc1e37ff6' for _ in range(len(colls))]
+    #collections = ['fb336c5bd9d84251af2d596138df8fbb' for _ in range(len(colls))]
+
+    collection_sets = colls
+    collections = colls
 
     for coll, coll_set, coll_id in zip(colls, collection_sets, collections):
-        print(coll, coll_set, coll_id)
         load_mongo_collection(db_str, coll, harvest_type=harvest_type,
                               collection_set=coll_set, collection=coll_id)
 
 def load_warcs(topn=None):
-    "from sfm_elk_loader import load_warcs; load_warcs()"
+    """
+    Load warc files for all SFM collections.
+
+    from sfm_elk_loader import load_warcs; load_warcs()
+    """
 
     #warc_patt = "/sfm-data/collection_set/*/*/*/*/*/*.warc.gz"
     #files = sorted(glob.glob(warc_patt))
