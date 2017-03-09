@@ -70,9 +70,11 @@ class ElkLoader(BaseConsumer):
 
     def on_message(self):
         log.info(str('------------ ELkLoader -----------'))
-        log.info(str(type(self.message)))
-        log.info(str(self.message))
         log.info(json.dumps(self.message, indent=2))
+        log.info('='*100)
+        return
+
+        ## Example RMQ message
         """
         "collection_set": {
             "id": "bdb94ce08ebb49d0ba8a7cdcc1e37ff6"
@@ -82,7 +84,8 @@ class ElkLoader(BaseConsumer):
             "id": "bb02bb5537de4bc3aa138a114013e22d"
           }, 
           "warc": {
-            "path": "/sfm-data/collection_set/bdb94ce08ebb49d0ba8a7cdcc1e37ff6/c397f7da7e7a40bdbc89b9df542957ce/2017/01/14/03/bb02bb5537de4bc3aa138a114013e22d-20170114032325624-00000-60-608e249d40a7-8000.warc.gz", 
+            "path": "/sfm-data/collection_set/bdb94ce08ebb49d0ba8a7cdcc1e37ff6/c397f7da7e7a40bdbc89b9df542957ce/2017/01/14" +
+                    "/03/bb02bb5537de4bc3aa138a114013e22d-20170114032325624-00000-60-608e249d40a7-8000.warc.gz", 
             "id": "b77a40fb63634800a572a6e22fb51e72", 
             "date_created": "2017-01-13T22:23:26.151674-05:00"
           }, 
@@ -158,7 +161,7 @@ def load_mongo_collection(db_str, coll_str,
     print(jq_cmd)
 
     recs = coll.find()
-    js_file = 'tweets.json'
+    js_file = '/tmp/elk-tweet-import.json'
 
     print('\tdumping to json file')
     if topn > 0:
@@ -207,11 +210,11 @@ def load_mongos(colls, db_str='twitter', harvest_type='twitter_filter'):
         load_mongo_collection(db_str, coll, harvest_type=harvest_type,
                               collection_set=coll_set, collection=coll_id)
 
-def load_warcs(topn=None):
+def load_warcs(topn=None, collection_sets=[], collections=[]):
     """
     Load warc files for all SFM collections.
 
-    from sfm_elk_loader import load_warcs; load_warcs()
+    from sfm_elk_loader import load_warcs; load_warcs(collection_sets=['7f01bc9a905c4767a21998bd98e37a0e'])
     """
 
     #warc_patt = "/sfm-data/collection_set/*/*/*/*/*/*.warc.gz"
@@ -230,17 +233,19 @@ def load_warcs(topn=None):
     harvest_type = 'twitter_filter'
 
     for i, warc_filepath in enumerate(files):
-        print '-'*100
-        print '%i of %i: warc_path: %s' % (i+1, len(files), warc_filepath)
-
         toks = warc_filepath.split('/')
-
         collection_set, collection = toks[3], toks[4]
+        if collection_sets and collection_set not in collection_sets:
+            continue
+        if collections and collection not in collections:
+            continue
+
+        print '-'*100
 
         jq_cmd, iter_type = get_jq_cmd(harvest_type, collection_set, collection, warc_filepath)
         
         cmd = "{} {} | {} | /opt/logstash/bin/logstash -f stdin.conf".format(iter_type, warc_filepath, jq_cmd)
-        print('<CMD> ' + cmd)
+        #print('<CMD> ' + cmd)
 
         try:
             check_output(cmd, shell=True)
@@ -283,5 +288,5 @@ if __name__ == "__main__":
 
 """
 ## fail with substring : not found
-twitter_stream_warc_iter.py /sfm-data/collection_set/2f235ce78c5046f4be4b1c72bd9d5edd/0da5c49994844899b255c5d7bc27a8bf/2017/01/14/09/WEB-20170114095529443-00000-60~fd8654996a3f~8443.warc.gz | jq -c '{ sm_type: "tweet", collection_set: "2f235ce78c5046f4be4b1c72bd9d5edd", collection: "0da5c49994844899b255c5d7bc27a8bf", mongo: "", harvest_type: "twitter_filter", warc: "/sfm-data/collection_set/2f235ce78c5046f4be4b1c72bd9d5edd/0da5c49994844899b255c5d7bc27a8bf/2017/01/14/09/WEB-20170114095529443-00000-60~fd8654996a3f~8443.warc.gz", id: .id, user_id: .user.id_str, screen_name: .user.screen_name, created_at: .created_at, text: .text, retweet_count: .retweet_count, favorite_count: .favorite_count, retweeted: .retweeted, user_description: .user.description, geoip_longitude: .coordinates?.coordinates[0], geoip_latitude: .coordinates?.coordinates[1], user_mentions: [.entities.user_mentions[]?.screen_name], hashtags: [.entities.hashtags[]?.text], urls: [.entities.urls[]?.expanded_url]}' | /opt/logstash/bin/logstash -f stdin.conf
+ | /opt/logstash/bin/logstash -f stdin.conf
 """
