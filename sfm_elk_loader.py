@@ -163,16 +163,17 @@ def load_mongo_collection(db_str, coll_str,
     recs = coll.find()
     js_file = '/tmp/elk-tweet-import.json'
 
-    print('\tdumping to json file')
+    
     if topn > 0:
         recs = recs[:topn]
+    
     with open(js_file, 'w+') as fout:
+        print('\tdumping to json file')
         for i, rec in enumerate(recs):
             rec['created_at'] = rec['created_at_orig']
             #fout.write(json.dumps(rec, default=json_util.default) + u'\n')
             fout.write(json.dumps(rec) + u'\n')
         print('\twrote {:,} lines'.format(i))
-        
 
     cmd = "cat %s | %s | /opt/logstash/bin/logstash -f stdin.conf " \
           % (js_file, jq_cmd)
