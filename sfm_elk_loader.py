@@ -254,7 +254,8 @@ def load_warcs(topn=None, collection_sets=[], collections=[]):
         except CalledProcessError, e:
             print("%s returned %s: %s", cmd, e.returncode, e.output)
 
-
+def load_twitter_rest():
+    fs = glob.glob('cd /sfm-data/collection_set && twitter_rest_warc_iter.py */*/*/*/*/*/* | ')
 
 if __name__ == "__main__":
     """
