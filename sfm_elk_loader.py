@@ -34,7 +34,9 @@ jq_twtr ="jq -c '{ sm_type: \"tweet\", " \
          "hashtags: [.entities.hashtags[]?.text], " \
          "urls: [.entities.urls[]?.expanded_url]}'"
 
+
 HARVEST_TYPES = set(['twitter_search', 'twitter_user_timeline', 'twitter_sample', 'twitter_filter', 'weibo_timeline'])
+
 
 def get_jq_cmd(harvest_type, collection_set, collection, warc_filepath):
 
@@ -142,7 +144,8 @@ def load_mongo_collection(db_str, coll_str,
                           collection='',
                           topn=None):
     """
-    collection_set: can be set to link existing MongoDB records to new stream.
+    Load twitter data from MongoDB into Kibana.
+    Set `collection` and `collection_set` to match any existing data collected with SFM.
     """
     client = get_mongo_client()
     db = client[db_str]
@@ -163,7 +166,6 @@ def load_mongo_collection(db_str, coll_str,
     recs = coll.find()
     js_file = '/tmp/elk-tweet-import.json'
 
-    
     if topn > 0:
         recs = recs[:topn]
     
@@ -194,13 +196,6 @@ def load_mongos(colls, db_str='twitter', harvest_type='twitter_filter'):
     if harvest_type not in HARVEST_TYPES:
         raise Exception('Unknown harvest type "%s". Must be one of %s' % str(HARVEST_TYPES))
     #colls = ['huntington', 'narcan']
-    #colls = ['huntington_rest']
-    #colls = ['huntington_rest', 'huntington_rest_30m']
-    #colls = ['election_third_debate']
-
-    #collection_sets = ['bdb94ce08ebb49d0ba8a7cdcc1e37ff6'] #, 'bdb94ce08ebb49d0ba8a7cdcc1e37ff6']
-    #collections = ['fb336c5bd9d84251af2d596138df8fbb'] #, 'c397f7da7e7a40bdbc89b9df542957ce']
-    
     #collection_sets = ['bdb94ce08ebb49d0ba8a7cdcc1e37ff6' for _ in range(len(colls))]
     #collections = ['fb336c5bd9d84251af2d596138df8fbb' for _ in range(len(colls))]
 
@@ -214,12 +209,10 @@ def load_mongos(colls, db_str='twitter', harvest_type='twitter_filter'):
 def load_warcs(topn=None, collection_sets=[], collections=[]):
     """
     Load warc files for all SFM collections.
-
-    from sfm_elk_loader import load_warcs; load_warcs(collection_sets=['7f01bc9a905c4767a21998bd98e37a0e'])
     """
-
     #warc_patt = "/sfm-data/collection_set/*/*/*/*/*/*.warc.gz"
     #files = sorted(glob.glob(warc_patt))
+    #from sfm_elk_loader import load_warcs
 
     files = find_files('/sfm-data/collection_set/', '*.warc.gz')
 
@@ -236,6 +229,7 @@ def load_warcs(topn=None, collection_sets=[], collections=[]):
     for i, warc_filepath in enumerate(files):
         toks = warc_filepath.split('/')
         collection_set, collection = toks[3], toks[4]
+
         if collection_sets and collection_set not in collection_sets:
             continue
         if collections and collection not in collections:
@@ -274,19 +268,24 @@ if __name__ == "__main__":
     parser.add_argument("--collection-set", help="Limit to load to collection set with this collection set id.")
     parser.add_argument("--debug", type=lambda v: v.lower() in ("yes", "true", "t", "1"), nargs="?",
                         default="False", const="True")
+    parser.add_argument('--action', help='run direct commands',
+                        default=1, type=int)
 
     args = parser.parse_args()
 
     # Logging
     logging.getLogger().setLevel(logging.DEBUG if args.debug else logging.INFO)
 
-    # Adding a queue name that is prefixed with this host. This will allow sending messages directly
-    # to this queue. This approach could be generalized so that the queue specific binding is created
-    # and the queue name is automatically removed.
-    loader = ElkLoader(collection_set_id=args.collection_set,
-                       mq_config=MqConfig(args.host, args.username, args.password, EXCHANGE,
-                                          {args.queue: ["warc_created", "{}.warc_created".format(args.queue)]}))
-    loader.run()
+    if args.action:
+        # Adding a queue name that is prefixed with this host. This will allow sending messages directly
+        # to this queue. This approach could be generalized so that the queue specific binding is created
+        # and the queue name is automatically removed.
+        loader = ElkLoader(collection_set_id=args.collection_set,
+                           mq_config=MqConfig(args.host, args.username, args.password, EXCHANGE,
+                                              {args.queue: ["warc_created", "{}.warc_created".format(args.queue)]}))
+        loader.run()
+    else:
+        pass
 
 """
 ## fail with substring : not found
